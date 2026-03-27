@@ -1,0 +1,9 @@
+pyvisa
+matplotlib
+numpy
+requests
+Pillow
+screeninfo
+pyserial
+pandas
+scipy
