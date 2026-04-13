@@ -700,89 +700,6 @@ class KeithleyGUI:
         popt, success = optimize_fit(volts, currents_nA, v_bd_deriv, user_params=self.user_fit_params)
         self.plot_analysis_results(volts, currents_nA, v_bd_deriv, popt, success)
 
-    '''def plot_analysis_results(self, volts, currents_nA, v_bd_deriv, popt, success):
-        self.fig_analysis.clf() 
-        self.fig_analysis.subplots_adjust(left=0.10, right=0.95, top=0.88, bottom=0.10, hspace=0.1)
-
-        if hasattr(self, 'show_geiger_var'): show_geiger = self.show_geiger_var.get()
-        else: show_geiger = True 
-        
-        if show_geiger:
-            gs = GridSpec(2, 1, height_ratios=[3, 1]) 
-            ax_iv = self.fig_analysis.add_subplot(gs[0])
-            ax_prob = self.fig_analysis.add_subplot(gs[1], sharex=ax_iv)
-        else:
-            ax_iv = self.fig_analysis.add_subplot(111)
-            ax_prob = None
-
-        star = mpath.Path.unit_regular_star(6)
-        circle = mpath.Path.unit_circle()
-        cut_star = mpath.Path(vertices=np.concatenate([circle.vertices, star.vertices[::-1, ...]]), codes=np.concatenate([circle.codes, star.codes]))
-
-        ax_iv.plot(volts, currents_nA, marker=cut_star, color='indigo', markersize=10, alpha=0.6, label="Measured Data", linestyle='None')
-        
-        if success:
-            v_bd_fit = popt[0]
-            y_val_nA = dinu_eq8_model(v_bd_fit, *popt) #* 1000.0
-            idx = (np.abs(volts - v_bd_fit)).argmin()
-            ax_iv.plot(v_bd_fit, y_val_nA, 'rx', markersize=10, markeredgewidth=2, label="Breakdown Point")
-
-            ax_iv.annotate(f"Breakdown Point: {v_bd_fit:.2f}V", xy=(v_bd_fit, y_val_nA), xytext=(v_bd_fit - (max(volts)*0.15), currents_nA[idx]-y_val_nA/2), color='red', fontweight='bold', arrowprops=dict(arrowstyle='->', color='red'), bbox=dict(boxstyle="round", fc="white", alpha=0.7), fontsize=13)
-            #################################################################################
-            y_val_nA_ov = dinu_eq8_model(v_bd_fit+2.7, *popt)
-            
-            ax_iv.plot(v_bd_fit+2.7, y_val_nA_ov, 'mP', markersize=10, markeredgewidth=2,label="Current at 2.7 Overvoltage")
-            ax_iv.annotate(f"$V_{{bd}}+2.7$: {v_bd_fit+2.7:.2f} V\n I: {y_val_nA_ov:0.0f} nA", xy=(v_bd_fit+2.7, y_val_nA_ov), xytext=(v_bd_fit+2.7 -7, y_val_nA_ov-0.7*y_val_nA_ov), color='m', fontweight='bold', arrowprops=dict(arrowstyle='->', color='red'), bbox=dict(boxstyle="round", fc="white", alpha=0.7), fontsize=13)
-            #################################################################################
-            v_smooth = np.linspace(min(volts), min(max(volts), popt[1]-0.1), 1000)
-            i_fit_nA = dinu_eq8_model(v_smooth, *popt)
-            #i_fit_nA = i_fit_uA #* 1000.0
-            ax_iv.plot(v_smooth, i_fit_nA, 'g--', linewidth=2, label=f"Fit Model")
-            ax_iv.axvline(v_bd_fit, color='blue', linestyle='--', alpha=0.5) 
-            if ax_prob: ax_prob.axvline(v_bd_fit, color='blue', linestyle='--', alpha=0.5)
-            
-            if show_geiger and ax_prob:
-                p_factor = popt[2]
-                p_geiger = np.zeros_like(v_smooth)
-                mask_aval = v_smooth > v_bd_fit
-                if np.any(mask_aval): p_geiger[mask_aval] = 1 - np.exp(-p_factor * (v_smooth[mask_aval] - v_bd_fit))
-                ax_prob.plot(v_smooth, p_geiger, 'b-', linewidth=2, label="Geiger Prob.")
-                ax_prob.fill_between(v_smooth, p_geiger, color='blue', alpha=0.1)
-                ax_prob.axhline(1.0, color='gray', linestyle='--', alpha=0.5)
-                ax_prob.set_ylabel("Geiger Prob.", fontweight='bold', color='blue', fontsize=13)
-                ax_prob.set_xlabel("Bias Voltage (V)", fontweight='bold',fontsize=14)
-                ax_prob.set_ylim(-0.05, 1.1)
-                ax_prob.grid(True, which='both', linestyle='--', alpha=0.5)
-                formula_txt = r"$P_{Geiger} = 1 - e^{-p(V - V_{bd})}$"
-                ax_prob.text(0.02, 0.6, formula_txt, transform=ax_prob.transAxes, 
-                             fontsize=11, color='darkblue', fontweight='bold',
-                             bbox=dict(boxstyle="round,pad=0.3", fc="white", alpha=0.85, ec="blue"))		
-            if self.show_dcr_var.get()==0:
-                equation_para = (r"$\bf{Fit\ Parameters:}$" + "\n" + f"Breakdown ($V_{{bd}}$): {popt[0]:.2f} V\n" + f"Critical ($V_{{cr}}$): {popt[1]:.2f} V\n" + f"Geiger Shape ($p$): {popt[2]:.2f}\n" + f"Amplitude ($A$): {popt[3]:.2e}\n" + f"Leak Slope ($a$): {popt[4]:.2e}\n" + f"Leak Offset ($b$): {popt[5]:.2e}")
-            else:
-                if abs(self.C_ucell)>0:
-                    DCR=popt[3]*1e-9/(self.C_ucell*1e3)
-                else: DCR=0   
-                equation_para = (r"$\bf{Fit\ Parameters:}$" + "\n" + f"Breakdown ($V_{{bd}}$): {popt[0]:.2f} V\n" + f"Critical ($V_{{cr}}$): {popt[1]:.2f} V\n" + f"Geiger Shape ($p$): {popt[2]:.2f}\n" + f"Amplitude ($A$): {popt[3]:.2e}\n" + f"Leak Slope ($a$): {popt[4]:.2e}\n" + f"Leak Offset ($b$): {popt[5]:.2e}\n"+f"DCR : {DCR:0.3f} kHz")
-    
-                
-                
-                
-            equation_latex = (r"$I_{tot} = I_{leak} + I_{aval}$" + "\n" + r"$I_{leak} = \exp(aV + b)$" + "\n" + r"$I_{aval} = A \cdot \Delta V \cdot (1 - e^{-p \Delta V}) \cdot \frac{V_{cr}-V_{bd}}{V_{cr}-V}$" + "\n")
-            
-            ax_iv.text(0.33, 0.96, equation_para, transform=ax_iv.transAxes, verticalalignment='top', fontsize=15, bbox=dict(boxstyle="round", fc="white", alpha=0.90, ec="#27AE60"), color="#2C3E50")
-            ax_iv.text(0.01, 0.92, equation_latex, transform=ax_iv.transAxes, verticalalignment='top', fontsize=15, bbox=dict(boxstyle="round", fc="white", alpha=0.90, ec="green"), color="black")
-                         
-        ax_iv.set_ylabel("Current (nA)", fontweight='bold',fontsize=14)
-        ax_iv.set_yscale(self.scale_var.get())
-        if not show_geiger: ax_iv.set_xlabel("Bias Voltage (V)", fontweight='bold',fontsize=14)   
-        ax_iv.grid(True, which='both', linestyle='--', alpha=0.5)
-        ax_iv.set_title(self.module_name.get(), pad=35) 
-        ax_iv.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left', ncol=4, mode="expand", borderaxespad=0., frameon=False, fontsize=14)
-        
-        self.canvas_analysis.draw()
-        self.plot_notebook.select(self.tab_analysis)
-        print(f"Analysis Complete. Vbd: {v_bd_deriv:.2f}V")'''
         
     def plot_analysis_results(self, volts, currents_nA, v_bd_deriv, popt, success):
         self.fig_analysis.clf() 
@@ -2024,7 +1941,7 @@ class KeithleyGUI:
         else:
             base_path = os.path.abspath(".")
         
-        image_path_vi = os.path.join(base_path, "light_files", "keithley.png")
+        '''image_path_vi = os.path.join(base_path, "light_files", "keithley.png")
         
         try:
             img = Image.open(image_path_vi)
@@ -2039,7 +1956,21 @@ class KeithleyGUI:
             self.image_label_vi.place(relx=0.5, rely=0.5, anchor="center")
         
         except Exception as e:
-            print("Placeholder image error:", e)
+            print("Placeholder image error:", e)'''
+
+        image_path_k = os.path.join(base_path, 'light_files', 'keithley.png')
+        try:
+            image_keithley = Image.open(image_path_k)
+            resized_image_keithley = image_keithley.resize((500, 215)) 
+            photo_keithley = ImageTk.PhotoImage(resized_image_keithley)
+            self.image_label_keithley = ttk.Label(self.keithley_img_frame, image=photo_keithley, style='Panel.TLabel')
+            self.image_label_keithley.image = photo_keithley
+            self.image_label_keithley.pack(anchor='center', expand=True)
+        except:
+             self.image_label_keithley = ttk.Label(self.keithley_img_frame, text="Keithley Device Ready", font=('Segoe UI', 24, 'bold'), foreground='#BDC3C7')
+             self.image_label_keithley.pack(anchor='center', expand=True)
+
+
         
         self.plot_frame = Frame(post_right, bg="white")
         self.plot_frame.place(relx=0, rely=0, relwidth=1, relheight=1)
