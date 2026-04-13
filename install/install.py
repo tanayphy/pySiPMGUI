@@ -16,7 +16,8 @@ def install_requirements():
         "screeninfo",  # for import screeninfo
         "pyserial",    # for import serial (Package is pyserial, not serial)
         "pandas",      # for import pandas
-        "scipy"        # for from scipy.optimize import curve_fit
+        "scipy" ,       # for from scipy.optimize import curve_fit
+        "pwlf"
     ]
 
     print("=========================================")

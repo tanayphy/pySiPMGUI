@@ -293,6 +293,7 @@ class KeithleyGUI:
         self.p_address = StringVar()
         self.module_name = StringVar(value="Sipm V-I Characteristic Test")
         self.current_th = StringVar(value="10000")
+        self.Nmeas = StringVar(value="5")
         self.start_voltage = StringVar()
         self.end_voltage = StringVar()
         self.step_voltage = StringVar(value='0.5')
@@ -399,7 +400,7 @@ class KeithleyGUI:
         sidebar_frame.pack(side=Tk.LEFT, fill=Tk.Y, expand=False)
         
         # Scrollbar Configuration
-        sidebar_canvas = Tk.Canvas(sidebar_frame, bg=self.colors['bg_sidebar'], width=280, highlightthickness=0)
+        sidebar_canvas = Tk.Canvas(sidebar_frame, bg=self.colors['bg_sidebar'], width=350, highlightthickness=0)
         sidebar_scroll = ttk.Scrollbar(sidebar_frame, orient="vertical", command=sidebar_canvas.yview)
         sidebar_canvas.configure(yscrollcommand=sidebar_scroll.set)
         
@@ -447,19 +448,22 @@ class KeithleyGUI:
         volt_group = ttk.LabelFrame(self.button_frame, text="PARAMETERS (V)", style='Group.TLabelframe', padding=5)
         volt_group.pack(fill=Tk.X, padx=5, pady=2, expand=True)
         for i in range(3): volt_group.columnconfigure(i, weight=1)
-        ttk.Label(volt_group, text="Start:", style='Sidebar.TLabel').grid(row=0, column=0, sticky='e')
+        ttk.Label(volt_group, text="Start (V):", style='Sidebar.TLabel').grid(row=0, column=0, sticky='e')
         ttk.Entry(volt_group, textvariable=self.start_voltage, width=6).grid(row=0, column=1, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="End:", style='Sidebar.TLabel').grid(row=0, column=2, sticky='e')
+        ttk.Label(volt_group, text="End (V):", style='Sidebar.TLabel').grid(row=0, column=2, sticky='e')
         ttk.Entry(volt_group, textvariable=self.end_voltage, width=6).grid(row=0, column=3, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="Step:", style='Sidebar.TLabel').grid(row=1, column=0, sticky='e')
+        ttk.Label(volt_group, text="Up (V) :", style='Sidebar.TLabel').grid(row=1, column=0, sticky='e')
         ttk.Entry(volt_group, textvariable=self.step_voltage, width=6).grid(row=1, column=1, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="Down:", style='Sidebar.TLabel').grid(row=1, column=2, sticky='e')
+        ttk.Label(volt_group, text="Down (V) :", style='Sidebar.TLabel').grid(row=1, column=2, sticky='e')
         ttk.Entry(volt_group, textvariable=self.down_step_voltage, width=6).grid(row=1, column=3, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="Delay:", style='Sidebar.TLabel').grid(row=2, column=0, sticky='e')
+        ttk.Label(volt_group, text="Delay (Sec) :", style='Sidebar.TLabel').grid(row=2, column=0, sticky='e')
         ttk.Entry(volt_group, textvariable=self.delay_time, width=6).grid(row=2, column=1, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="Curr Limit (uA):", style='Sidebar.TLabel').grid(row=2, column=2, sticky='e')
+        ttk.Label(volt_group, text="Curr Lim (uA):", style='Sidebar.TLabel').grid(row=2, column=2, sticky='e')
         ttk.Entry(volt_group, textvariable=self.current_th, width=6).grid(row=2, column=3, sticky='ew', padx=2)
-
+        ttk.Label(volt_group, text="No. Meas Per Step:", style='Sidebar.TLabel').grid(row=3,columnspan=2, column=0, sticky='e')
+        #ttk.Entry(volt_group, textvariable=self.Nmeas, width=6).grid(row=3, column=2,columnspan=2, sticky='ew', padx=2)
+        #ttk.Entry(volt_group, textvariable=self.Nmeas, width=6).tap(lambda w: w.bind("<FocusOut>", lambda e: self.validate_and_run())).grid(row=3, column=2,columnspan=2, sticky='ew', padx=2)
+        e = ttk.Entry(volt_group, textvariable=self.Nmeas, width=6); e.bind("<FocusOut>", lambda _: self.validate_and_run()); e.grid(row=3, column=2,columnspan=2, sticky='ew', padx=2)
         plot_group = ttk.LabelFrame(self.button_frame, text="PLOT", style='Group.TLabelframe', padding=5)
         plot_group.pack(fill=Tk.X, padx=5, pady=2, expand=True)
         scale_frame = ttk.Frame(plot_group, style='Sidebar.TFrame')
@@ -910,11 +914,28 @@ class KeithleyGUI:
         	curr=curr+float(vals[1])
         	
         return vol/5,curr/5'''
-       
+    def validate_and_run(self):
+        try:
+        # Attempt to convert the string to an integer
+            iterations = int(self.Nmeas.get())
+            print(iterations)
+        # Optional: Check if the number is positive
+            if iterations <= 0:
+                self.Nmeas.set("5") 
+                raise ValueError("Number must be greater than zero, reseting it to 5")
+                      
+                 # If successful, continue with your logic
+            print(f"Starting with {iterations} measurements.")
+
+        except ValueError:
+        # This triggers if int() fails or if our custom 'positive' check fails
+            self.Nmeas.set("5")
+            msg.showwarning("Input Error", "Please enter a valid whole number for 'No. Meas Per Step'.,  reseting it to 5")   
+
     def measure_all(self):
        total_vol = 0.0
        total_curr = 0.0
-       iterations = 5
+       iterations = int(self.Nmeas.get())
 
     # 1. Clear status and turn Output ON once
        self.instrument.write("*CLS")
@@ -2003,7 +2024,7 @@ class KeithleyGUI:
         else:
             base_path = os.path.abspath(".")
         
-        image_path_vi = os.path.join(base_path, "light_files", "vi.png")
+        image_path_vi = os.path.join(base_path, "light_files", "keithley.png")
         
         try:
             img = Image.open(image_path_vi)

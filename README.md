@@ -17,8 +17,12 @@ PySiPMGUI is an open-source, non-blocking Graphical User Interface (GUI) develop
 Python 3 is required. Install the necessary dependencies using pip:
 
 ```bash
+python3 install/install.py 
+
+or
+
 pip install -r requirements.txt
-pip install pyvisa pyserial numpy scipy matplotlib pwlf
+ 
 ```
 
 
