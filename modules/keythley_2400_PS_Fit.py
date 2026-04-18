@@ -1,8 +1,19 @@
 '''
-Copyright (c) 2024 Tanay Dey
-... [License text preserved] ...
+#############################################################################################################################
+
+Copyright (c) 2024 Tanay Dey Creative Commons Attribution-NonCommercial 4.0
+
+Title: PySiPMGUI: A Universal Python-Based Software for Photodetector I-V Quality Assurance: From Underground Dark Matter Searches to Astroparticle Cherenkov Cameras
+
 Author: Dr. Tanay Dey
-Present Affiliation: SAHA INSTITUTE OF NUCLEAR PHYSICS (SINP), KOLKATA, INDIA
+
+Co Authors: Suraj Shaw, Ritabrata Banerjee, Pratik Majumdar, Satyaki Bhattacharya
+
+https://doi.org/10.48550/arXiv.2603.24781
+
+https://github.com/tanayphy/pySiPMGUI.git
+
+###############################################################################################################################
 '''
 
 import pyvisa as visa
