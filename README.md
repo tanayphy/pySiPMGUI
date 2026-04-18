@@ -1,5 +1,6 @@
 
-######################################################################################################################################################################################################
+#############################################################################################################################
+
 Copyright (c) 2024 Tanay Dey
 Creative Commons Attribution-NonCommercial 4.0
 
@@ -15,7 +16,7 @@ https://doi.org/10.48550/arXiv.2603.24781
 
 https://github.com/tanayphy/pySiPMGUI.git
 
-#####################################################################################################################################################################################################
+###############################################################################################################################
 
 PySiPMGUI is an open-source, non-blocking Graphical User Interface (GUI) developed in Python 3. It is designed for the automated I-V characterization of Silicon Photomultipliers (SiPMs), providing a free and platform-independent alternative to commercial software for the particle and astroparticle physics communities.
 
