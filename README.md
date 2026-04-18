@@ -1,6 +1,20 @@
 
-# PySiPMGUI
+######################################################################################################################################################################################################
+Copyright (c) 2024 Tanay Dey
+Creative Commons Attribution-NonCommercial 4.0
 
+Title:
+PySiPMGUI: A Universal Python-Based Software for Photodetector I-V Quality Assurance: From Underground Dark Matter Searches to Astroparticle Cherenkov Cameras
+
+Author: Dr. Tanay Dey
+Co Authors: Suraj Shaw, Ritabrata Banerjee, Pratik Majumdar, Satyaki
+Bhattacharya
+
+https://doi.org/10.48550/arXiv.2603.24781
+
+https://github.com/tanayphy/pySiPMGUI.git
+
+#####################################################################################################################################################################################################
 **A Universal Python-Based Software for Photodetector I-V Quality Assurance**
 
 PySiPMGUI is an open-source, non-blocking Graphical User Interface (GUI) developed in Python 3. It is designed for the automated I-V characterization of Silicon Photomultipliers (SiPMs), providing a free and platform-independent alternative to commercial software for the particle and astroparticle physics communities.
