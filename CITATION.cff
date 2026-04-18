@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Dey"
+  given-names: "Tanay"
+title: "PySiPMGUI: A Universal Python-Based Software for Photodetector I-V Quality Assurance"
+version: 1.0.0
+date-released: 2026-04-18
+url: "https://github.com/tanayphy/pySiPMGUI.git"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Dey"
+    given-names: "Tanay"
+  title: "PySiPMGUI: A Universal Python-Based Software for Photodetector I-V Quality Assurance: From Underground Dark Matter Searches to Astroparticle Cherenkov Cameras"
+  journal: "https://doi.org/10.48550/arXiv.2603.24781"
+  year: 2026
