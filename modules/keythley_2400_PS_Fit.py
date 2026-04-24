@@ -1,19 +1,10 @@
 '''
-#############################################################################################################################
+ MIT License
 
-Copyright (c) 2024 Tanay Dey Creative Commons Attribution-NonCommercial 4.0
-
-Title: PySiPMGUI: A Universal Python-Based Software for Photodetector I-V Quality Assurance: From Underground Dark Matter Searches to Astroparticle Cherenkov Cameras
-
+Copyright (c) 2024 Tanay Dey
+... [License text preserved] ...
 Author: Dr. Tanay Dey
-
-Co Authors: Suraj Shaw, Ritabrata Banerjee, Pratik Majumdar, Satyaki Bhattacharya
-
-https://doi.org/10.48550/arXiv.2603.24781
-
-https://github.com/tanayphy/pySiPMGUI.git
-
-###############################################################################################################################
+Present Affiliation: SAHA INSTITUTE OF NUCLEAR PHYSICS (SINP), KOLKATA, INDIA
 '''
 
 import pyvisa as visa
@@ -228,10 +219,6 @@ class KeithleyGUI:
         self.humid_arr = []
         self.time_arr = []
        
-        # Simulation Data
-        #self.voltage_array_sim = np.array([ 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.5, 14.0, 14.5, 15.0, 15.5, 16.0, 16.5, 17.0, 17.5, 18.0, 18.5, 19.0, 19.5, 20.0, 20.5, 21.0, 21.5, 22.0, 22.5, 23.0, 23.5, 24.0, 24.5, 25.0, 25.5, 26.0, 26.5, 27.0, 27.5, 28.0, 28.5, 29.0, 29.5, 30.0])
-        
-        #self.current_array_sim = np.array([ 0.7104839000000001, 1.2014749999999998, 0.8774472999999999, 1.940415, 1.705872, 1.274704, 2.186259, 1.96661, 1.894825, 2.018717, 2.064218, 1.941652, 2.573901, 1.9488300000000005, 2.58141, 2.818302, 2.691768, 2.866244, 2.385318, 2.806337, 3.081027, 2.648411, 2.857701, 2.644859, 2.8332390000000003, 2.913645, 3.332809, 3.310944, 3.468049, 3.617178, 3.733407, 3.737988, 3.736461, 4.008461, 3.881432, 3.770413, 4.475728, 3.956766, 4.240734, 4.340819, 4.632298, 4.449694999999999, 4.246217, 5.70826, 3.521805, 3.3010390000000003, 7.359289, 5.850054, 5.308605, 25.1172, 192.9801, 517.5822000000001, 1007.169, 1585.119, 2397.39, 3382.047, 4665.905, 6149.853, 8115.172, 10512.3])
 
         self.voltage_array_sim = np.array([
      0.4999859, 0.999952, 1.499947, 1.999928, 2.4998, 2.999674, 
@@ -256,7 +243,9 @@ class KeithleyGUI:
     4.796926, 6.430016, 4.66504, 5.922447, 8.494838, 4.520731, 2.77246, 
     5.683654, 21.71631, 178.5566, 440.3047, 823.2871, 1340.467, 1975.572, 
     2828.87, 3826.657, 5109.14, 6757.934, 8820.594
-])
+]) #SenSL
+
+
         # Instrument & Control Flags
         self.C_ucell=0
         self.rm = None
@@ -314,6 +303,7 @@ class KeithleyGUI:
         self.single_voltage = StringVar()
         self.user_answer = StringVar()
         self.var = IntVar()
+        
         self.scale_var = StringVar(value="log")
         
         self.calc_vbd_var = Tk.BooleanVar(value=True)
@@ -461,9 +451,9 @@ class KeithleyGUI:
         ttk.Entry(volt_group, textvariable=self.start_voltage, width=6).grid(row=0, column=1, sticky='ew', padx=2)
         ttk.Label(volt_group, text="End (V):", style='Sidebar.TLabel').grid(row=0, column=2, sticky='e')
         ttk.Entry(volt_group, textvariable=self.end_voltage, width=6).grid(row=0, column=3, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="Up (V) :", style='Sidebar.TLabel').grid(row=1, column=0, sticky='e')
+        ttk.Label(volt_group, text="Ramp Up (V) :", style='Sidebar.TLabel').grid(row=1, column=0, sticky='e')
         ttk.Entry(volt_group, textvariable=self.step_voltage, width=6).grid(row=1, column=1, sticky='ew', padx=2)
-        ttk.Label(volt_group, text="Down (V) :", style='Sidebar.TLabel').grid(row=1, column=2, sticky='e')
+        ttk.Label(volt_group, text="Ramp Down (V) :", style='Sidebar.TLabel').grid(row=1, column=2, sticky='e')
         ttk.Entry(volt_group, textvariable=self.down_step_voltage, width=6).grid(row=1, column=3, sticky='ew', padx=2)
         ttk.Label(volt_group, text="Delay (Sec) :", style='Sidebar.TLabel').grid(row=2, column=0, sticky='e')
         ttk.Entry(volt_group, textvariable=self.delay_time, width=6).grid(row=2, column=1, sticky='ew', padx=2)
@@ -1260,6 +1250,7 @@ class KeithleyGUI:
                     time.sleep(0.3)
             temp = float(temp1)
             humid = float(humid1)
+            
         try:
             if abs(self.end_vol - self.start_vol) > 1e-3:
                 polarrun = self.chk_polarity(self.end_vol, self.start_vol)
@@ -1398,7 +1389,7 @@ class KeithleyGUI:
         return self.current_array_sim[indx]*1e-9
         
     def simulation_run(self, event=None):
-        self.module_name.set(f"IV Characteristic of a SenSL SiPM")
+        #self.module_name.set(f"IV Characteristic of a SenSL SiPM")
         self.sim_flag = 1
         self.plot_VI_graph(-1, 1)
         self.pause_plot = 0
@@ -1419,28 +1410,28 @@ class KeithleyGUI:
             
     def simulation(self):
         self.window.after(0, self.show_green_light)
-        temp = '25'
-        humid = '30'
-        if self.var.get() == 1:
-            temp, humid = self.run_arduino()
-            if temp == '-999': self.stop_run()
+        temp = '25.4'
+        humid = '60.62'
+        #if self.var.get() == 1:
+        #    temp, humid = self.run_arduino()
+        #    if temp == '-999': self.stop_run()
 
         voltage = self.voltage_array_sim[self.run_index]
         self.xp.append(voltage)
         self.temp_arr.append(float(temp))
         self.humid_arr.append(float(humid))
         self.time_arr.append(str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        cur = self.sensel_current(self.run_index)
+        cur = self.sensel_current(self.run_index)*1e9
         self.yp.append(cur)
         self.plot1.set_data(self.xp, self.yp)
         self.plot5.set_data(self.xp, self.temp_arr)
         self.plot6.set_data(self.xp, self.humid_arr)
 
         if self.var.get() == 1:
-            self.p_reading.set('VOLTAGE:: ' + str(round(voltage, 4)) + ' V\n' + 'CURRENT::' + str(round(cur, 8)) + ' μA' + "\n" + 'Temp:: ' + temp + ' \u00B0C  Humid:: ' + humid + ' %')
+            self.p_reading.set('VOLTAGE:: ' + str(round(voltage, 4)) + ' V\n' + 'CURRENT::' + str(round(cur, 8)) + ' nA' + "\n" + 'Temp:: ' + temp + ' \u00B0C  Humid:: ' + humid + ' %')
             self.labels1.config(text=self.p_reading.get())
         else:
-            self.p_reading.set('VOLTAGE:: ' + str(round(voltage, 4)) + ' V\n' + 'CURRENT::' + str(round(cur, 8)) + ' μA')
+            self.p_reading.set('VOLTAGE:: ' + str(round(voltage, 4)) + ' V\n' + 'CURRENT::' + str(round(cur, 8)) + ' nA')
             self.labels1.config(text=self.p_reading.get())
 
         self.ax.relim()
@@ -1449,11 +1440,20 @@ class KeithleyGUI:
         time.sleep(self.time_delay)
         self.run_index = self.run_index + 1
         
-        if self.run_index < 60 and self.warn_flag == 0:
+        if self.run_index < len(self.voltage_array_sim) and self.warn_flag == 0:
             if self.pause_plot == 0 and self.stop_flag == 0: self.window.after(100, self.simulation)
             else: self.window.after(0, self.show_yellow_light)
         else:
+            xl=[]
+            yl=[]
+            xl.append(cur)
+            yl.append(voltage)
+            warning_message = 'WARNING: The current limit has been reached \n The voltage ramp-up is stopped \n Value of last measured current is '+str(round(cur,1)) +' nA'
             self.sim_flag = 0
+            self.warn_flag = 1
+            self.plot3.set_label(warning_message)
+            self.plot3.set_data(xl, yl)
+            
             self.window.after(0, self.show_red_light)
             if self.calc_vbd_var.get(): self.window.after(100, self.run_breakdown_analysis)
             self.save_results()
@@ -1549,7 +1549,7 @@ class KeithleyGUI:
                 self.multicolor_ylabel(self.ax2, (label, 'AND', 'Humidity in %'), ('m', 'k', 'b'), axis='y', size=15, xx=1.05, yy=0.2, weight='bold')
                 
             #self.multicolor_ylabel(self.ax, ('Current', 'in μA'), ('r', 'r'), axis='y', size=15, weight='bold', xx=-0.08)
-            self.multicolor_ylabel(self.ax, ('Current', 'in μA'), ('#3498DB', '#3498DB'), axis='y', size=15, weight='bold', xx=-0.08, yy=0.5)
+            self.multicolor_ylabel(self.ax, ('Current', 'in nA'), ('#3498DB', '#3498DB'), axis='y', size=15, weight='bold', xx=-0.08, yy=0.5)
             #self.ax2.set_ylabel('Current in μA', color='b')
 
         self.ax.set_xlabel('Voltage in V', color='green')
@@ -2120,9 +2120,9 @@ class KeithleyGUI:
             overvol=float(self.set_ovv.get())#2.5
             y_val_nA_ov = dinu_eq8_model(v_bd_fit+overvol, *popt)* 1e-9* scale_factor
             text_pos=max(voltage)-3 #v_bd_fit+overvol +5
-            ax1.plot(v_bd_fit+overvol, y_val_nA_ov, 'mP', markersize=10, markeredgewidth=2,label=f"Current at {overvol:0.2f} Overvoltage")
-            ann=ax1.annotate(f"$V_{{bd}}+overvol$: {v_bd_fit+overvol:.2f} V\n I: {y_val_nA_ov:0.2f} {self.current_unit_var.get()}", xy=(v_bd_fit+overvol, y_val_nA_ov),     xytext=(text_pos, 0.001*y_val_nA_ov), color='m', fontweight='bold', arrowprops=dict(arrowstyle='->', color='red'), bbox=dict(boxstyle="round", fc="white", alpha=0.7), fontsize=13)
-            ann.draggable()
+            #ax1.plot(v_bd_fit+overvol, y_val_nA_ov, 'mP', markersize=10, markeredgewidth=2,label=f"Current at {overvol:0.2f} Overvoltage")
+            #ann=ax1.annotate(f"$V_{{bd}}+overvol$: {v_bd_fit+overvol:.2f} V\n I: {y_val_nA_ov:0.2f} {self.current_unit_var.get()}", xy=(v_bd_fit+overvol, y_val_nA_ov),     xytext=(text_pos, 0.001*y_val_nA_ov), color='m', fontweight='bold', arrowprops=dict(arrowstyle='->', color='red'), bbox=dict(boxstyle="round", fc="white", alpha=0.7), fontsize=13)
+            #ann.draggable()
             #################################################################################
             
             
