@@ -1,5 +1,4 @@
 '''
- MIT License
 
 Copyright (c) 2024 Tanay Dey
 ... [License text preserved] ...
