@@ -1,4 +1,6 @@
 '''
+Creative Commons Attribution-NonCommercial 4.0
+
 
 Copyright (c) 2024 Tanay Dey
 ... [License text preserved] ...
