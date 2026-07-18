@@ -1,0 +1,48 @@
+#power_supply_address ASRL/dev/ttyUSB0::INSTR
+module_name Sipm_I-V
+polarity HV
+analysis_mode forward
+
+#Set Parameter
+
+start_voltage 0
+end_voltage 2.0
+step_voltage 0.05
+down_step_voltage 0.5
+delay_time 0.5
+current_limit 10000
+meas_per_step 5
+
+#plotting 
+
+plot_scale linear
+auto_y true
+show_errorbars true
+errorbar_capsize 4
+errorbar_scale 1.0
+#restrict_plot_range true
+#plot_range_vmin 1.
+#plot_range_vmax 1.4
+#plot_range_skip_delay 0.1
+
+
+#reverse bias 
+calc_vbd true
+show_geiger true
+show_dcr false
+
+#forward bias quenching resistance analysis
+show_rq true
+rq_rbias 149.7
+rq_ncells 18980
+rq_unit auto
+rq_precision 3
+#rq_show both
+#rq_show region1
+rq_show region2
+
+
+# Arduino and Run Mode Settings
+#arduino_enabled true
+#arduino_port /dev/ttyACM0
+run_mode single

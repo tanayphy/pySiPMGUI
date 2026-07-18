@@ -83,7 +83,7 @@ class MasterLauncher:
 
     def launch_keithley(self):
         # MAKE SURE THIS MATCHES YOUR FILENAME EXACTLY
-        self.launch_app("modules/keythley_2400_PS_Fit.py") 
+        self.launch_app("modules/Keithley.py") 
 
     def launch_scope(self):
         # MAKE SURE THIS MATCHES YOUR FILENAME EXACTLY

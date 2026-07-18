@@ -1,0 +1,26 @@
+#ard_port /dev/ttyUSB0
+baud 9600
+grid_rows 2
+grid_cols 1
+inter_delay 5
+inter_channel_delay 0
+autosave true
+overlay_fit_on_iv true
+batch_id TestRun_0703
+
+# Boards (as seen in screenshot)
+board_1_label Board_1
+board_1_slave_id 8
+board_1_pin 10
+board_1_participate true
+
+# SiPMs (as seen in screenshot)
+sipm_1_label SiPM_1
+sipm_1_board Board_1
+sipm_1_pin 5
+sipm_1_participate true
+
+sipm_2_label SiPM_2
+sipm_2_board Board_1
+sipm_2_pin 7
+sipm_2_participate true
